@@ -1,0 +1,5 @@
+CHANGELOG for WebAuth Extras for Drupal 7
+
+Webauth Extras 7.x-1.0-dev
+=================
+by mrmarco: Added webauth-create-user (waau) function
