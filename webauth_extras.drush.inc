@@ -29,6 +29,9 @@ function webauth_extras_drush_command() {
       'workgroup' => 'The workgroup you would like to map',
       'role' => 'The Drupal role you would like to map to',
     ),
+    'examples' => array(
+      'drush wamr stanford:staff administrator' => 'Maps the "stanford:staff" workgroup to the Drupal "administrator" role',
+    ),
     'aliases' => array('wamr'),
   );
   return $items;
@@ -118,6 +121,9 @@ function drush_webauth_extras_webauth_add_user($sunet = '') {
   watchdog('WebAuth','Created user through drush: %user', array('%user' => $name));    
 }
 
+/**
+ * Implements drush_COMMANDFILE_COMMANDNAME().
+ */
 function drush_webauth_extras_webauth_map_role($workgroup, $role) {
   //get a $role object from the role name
   $role = user_role_load_by_name($role);
@@ -130,4 +136,14 @@ function drush_webauth_extras_webauth_map_role($workgroup, $role) {
   ->execute();
   //write to the .htaccess
   webauth_write_htaccess();
+}
+
+/**
+ * Implements drush COMMANDFILE_COMMANDNAME_validate().
+ */
+function drush_webauth_extras_webauth_map_role_validate($workgroup, $role) {
+  $role = user_role_load_by_name($role);
+  if(!$role) {
+    return drush_set_error('NO_ROLE_EXISTS', dt('No such role with that name exists. Check your spelling  and try again.'));
+  }
 }
