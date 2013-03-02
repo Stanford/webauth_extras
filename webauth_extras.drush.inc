@@ -23,6 +23,14 @@ function webauth_extras_drush_command() {
 	),
 	'aliases' => array('waau'),
   );
+  $items['webauth-map-role'] = array(
+    'description' => 'Map a workgroup to a Drupal role',
+    'arguments' => array(
+      'workgroup' => 'The workgroup you would like to map',
+      'role' => 'The Drupal role you would like to map to',
+    ),
+    'aliases' => array('wamr'),
+  );
   return $items;
 }
 
@@ -108,4 +116,18 @@ function drush_webauth_extras_webauth_add_user($sunet = '') {
   user_set_authmaps($account, array('authname_webauth' => $authname));
 
   watchdog('WebAuth','Created user through drush: %user', array('%user' => $name));    
+}
+
+function drush_webauth_extras_webauth_map_role($workgroup, $role) {
+  //get a $role object from the role name
+  $role = user_role_load_by_name($role);
+  //db_insert into webauth_roles ($role->rid, $workgroup)
+  $query = db_insert('webauth_roles')
+    ->fields(array(
+      'rid' => $role->rid,
+      'wa_group' => $workgroup,
+  ))
+  ->execute();
+  //write to the .htaccess
+  webauth_write_htaccess();
 }
