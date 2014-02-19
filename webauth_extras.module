@@ -1,1 +1,55 @@
 <?php
+/**
+ * @file
+ * Code for the WebAuth Extras module.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function webauth_extras_menu() {
+  $items['admin/config/webauth/adduser'] = array(
+    'title' => 'Add WebAuth User',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('webauth_extras_waau_config_form'),
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+/**
+ * Configuration form for Add WebAuth User functionality.
+ */
+function webauth_extras_waau_config_form($form, &$form_state) {
+  $form['add'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Add a WebAuth User'),
+  );
+  $form['add']['sunetid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('SUNetID'),
+    '#description' => t('Enter the SUNetID of the user you wish to add.'),
+    '#required' => TRUE,
+  );
+  $form['add']['name']  = array(
+    '#type' => 'textfield',
+    '#title' => t('Name'),
+    '#description' => t('If you wish to specify the user\'s preferred name (instead of looking it up in LDAP), enter it here.'),
+  );
+  $form['add']['email']  = array(
+    '#type' => 'textfield',
+    '#title' => t('Email Address'),
+    '#description' => t('If you wish to specify an alternate email address (instead of sunetid@stanford.edu), enter it here.'),
+  );
+  $form['add']['makeadmin']  = array(
+    '#type' => 'checkbox',
+    '#title' => t('Make This User an Administrator'),
+    '#description' => t('Check this box to grant this user the "administrator" role.'),
+  );
+  $form['add']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Add WebAuth User'),
+  );
+  return $form;
+}
