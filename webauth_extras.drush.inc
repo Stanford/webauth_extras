@@ -72,6 +72,11 @@ function drush_webauth_extras_webauth_add_user_validate($sunet = '') {
   $default_email = $sunet . '@stanford.edu';
 
   $email = strtolower(trim(drush_get_option('email'))); 
+
+  if (!empty($email) && !valid_email_address($email)) {
+    return drush_set_error('Could not create user. Email ' . $email . ' is not valid.');
+  }
+
   if (empty($email)) { 
     $email = $default_email;
   }
