@@ -102,6 +102,11 @@ function webauth_extras_waau_config_form_validate($form, &$form_state) {
   $default_email = $sunet . '@stanford.edu';
 
   $email = strtolower(trim($form_state['values']['email']));
+
+  if (!empty($email) && !valid_email_address($email)) {
+    form_set_error('email', t('The e-mail address %email is not valid.', array('%email' => $email)));
+  }
+
   if (empty($email)) {
     $email = $default_email;
   }
