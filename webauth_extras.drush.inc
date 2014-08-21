@@ -156,7 +156,7 @@ function drush_webauth_extras_webauth_map_role_validate($workgroup, $role) {
     return drush_set_error('NO_ROLE_EXISTS', dt('No such role with that name exists. Check your spelling  and try again.'));
   }
   $query = db_query("SELECT * FROM {webauth_roles} WHERE rid = :rid AND wa_group = :wa_group",
-    array(':rid' => $form_state['values']['new_rid'], ':wa_group' => $form_state['values']['new_group']));
+    array(':rid' => $role->rid, ':wa_group' => $workgroup));
   if ($query->fetchField()) {
     return drush_set_error('MAPPING_EXISTS', dt('This workgroup is already mapped to this Drupal role!'));
   }
