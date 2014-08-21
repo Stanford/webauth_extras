@@ -34,6 +34,10 @@ function webauth_extras_drush_command() {
     ),
     'aliases' => array('wamr'),
   );
+  $items['webauth-write-htaccess'] = array(
+    'description' => 'Write the WebAuth .htaccess file to disk. Performs the same function as saving the configuration through the GUI.',
+    'aliases' => array('wawh'),
+  );
   return $items;
 }
 
@@ -152,3 +156,12 @@ function drush_webauth_extras_webauth_map_role_validate($workgroup, $role) {
     return drush_set_error('NO_ROLE_EXISTS', dt('No such role with that name exists. Check your spelling  and try again.'));
   }
 }
+
+/**
+ * Implements drush_COMMANDFILE_COMMANDNAME().
+ */
+function drush_webauth_extras_webauth_write_htaccess() {
+  //write to the .htaccess
+  webauth_write_htaccess();
+}
+
